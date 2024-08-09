@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Webcam Feed</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+        video {
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <video id="webcam" autoplay></video>
+
+    <script>
+        // Get the video element
+        const video = document.getElementById('webcam');
+
+        // Function to start the webcam
+        function startWebcam() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing the webcam:', error);
+                });
+        }
+
+        // Start the webcam on page load
+        window.addEventListener('load', startWebcam);
+    </script>
+</body>
+</html>
