@@ -3,9 +3,11 @@ import numpy as np
 import cv2
 from PIL import Image, ImageDraw
 import re
+import os
 
 reader = easyocr.Reader(['en'])
 plat = []
+os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 def predict(frame):
     result = reader.readtext(frame)
@@ -24,6 +26,8 @@ def predict(frame):
             cleaned_string = cleaned_string.upper()
             plat.append(cleaned_string)
         print("Data: {}, cleaned string: {}".format(data, cleaned_string))
+    
+    print(plat)
         
     boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
     
@@ -55,6 +59,7 @@ def for_image(img):
     predictions = predict(image)
     frame = show_labels(image, predictions)
     
+    cv2.namedWindow('OCR', cv2.WINDOW_NORMAL)
     cv2.imshow('OCR', frame)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -62,6 +67,7 @@ def for_image(img):
 def for_video():
     process_this_frame = 29
     cap = cv2.VideoCapture(0)
+    # cap.open('rtsp://admin:admin123@192.168.10.245:554/Streaming/channels/301', cv2.CAP_FFMPEG)
     predictions = []
     
     while 1 > 0:
@@ -72,6 +78,8 @@ def for_video():
                 predictions = predict(frame)
             frame = show_labels(frame, predictions)
             # print(plat)
+            cv2.namedWindow('OCR', cv2.WINDOW_NORMAL)
+            cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
             cv2.imshow('OCR', frame)
             if ord('q') == cv2.waitKey(10):
                 cap.release()
@@ -79,5 +87,7 @@ def for_video():
                 exit(0)
 
 if __name__ == '__main__':
-    img_dir = 'pic/contoh1.png'
+    img_dir = 'pic/6.png'
     for_image(img_dir)
+    
+    for_video()
