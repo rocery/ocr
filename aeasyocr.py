@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 import re
 import os
 
-reader = easyocr.Reader(['en'])
+reader = easyocr.Reader(['en', 'id'], gpu=False)
 plat = []
 os.environ["QT_QPA_PLATFORM"] = "xcb"
 
@@ -54,13 +54,15 @@ def show_labels(frame, predictions):
 
 def for_image(img):
     image = cv2.imread(img)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
     predictions = []
-    predictions = predict(image)
+    predictions = predict(gray_image)
     frame = show_labels(image, predictions)
     
     cv2.namedWindow('OCR', cv2.WINDOW_NORMAL)
     cv2.imshow('OCR', frame)
+    
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     
@@ -81,13 +83,13 @@ def for_video():
             cv2.namedWindow('OCR', cv2.WINDOW_NORMAL)
             cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
             cv2.imshow('OCR', frame)
-            if ord('q') == cv2.waitKey(10):
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()
                 exit(0)
 
 if __name__ == '__main__':
-    img_dir = 'pic/6.png'
+    img_dir = 'pic/4.jpg'
     for_image(img_dir)
     
     for_video()
