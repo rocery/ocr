@@ -68,8 +68,8 @@ def for_image(img):
     
 def for_video():
     process_this_frame = 29
-    cap = cv2.VideoCapture(0)
-    # cap.open('rtsp://admin:admin123@192.168.10.245:554/Streaming/channels/301', cv2.CAP_FFMPEG)
+    cap = cv2.VideoCapture()
+    cap.open('rtsp://admin:admin123@192.168.10.245:554/Streaming/channels/301', cv2.CAP_FFMPEG)
     predictions = []
     
     while 1 > 0:
@@ -78,8 +78,8 @@ def for_video():
             process_this_frame = process_this_frame + 1
             if process_this_frame % 30 == 0:
                 predictions = predict(frame)
-            frame = show_labels(frame, predictions)
-            # print(plat)
+            # frame = show_labels(frame, predictions)
+            # # print(plat)
             cv2.namedWindow('OCR', cv2.WINDOW_NORMAL)
             cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
             cv2.imshow('OCR', frame)
@@ -89,7 +89,7 @@ def for_video():
                 exit(0)
 
 if __name__ == '__main__':
-    img_dir = 'pic/4.jpg'
-    for_image(img_dir)
+    # img_dir = 'pic/4.jpg'
+    # for_image(img_dir)
     
     for_video()
