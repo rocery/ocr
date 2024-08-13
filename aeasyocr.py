@@ -89,7 +89,7 @@ def for_video():
                 exit(0)
 
 if __name__ == '__main__':
-    # img_dir = 'pic/4.jpg'
-    # for_image(img_dir)
+    img_dir = 'pic/4.jpg'
+    for_image(img_dir)
     
-    for_video()
+    # for_video()
