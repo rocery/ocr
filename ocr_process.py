@@ -86,6 +86,8 @@ def numpy_to_base64(image_np):
     return f"data:image/jpeg;base64,{img_str}"
 
 
+## OCR TIMEa
+
 
 
 
