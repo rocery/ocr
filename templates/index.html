@@ -29,6 +29,14 @@
                 </div>
             </div>
         </form>
+
+        <h1>Captured Image with Labels</h1>
+        {% if image_data %}
+        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Captured Image">
+        {% else %}
+        <p>Image not available</p>
+        {% endif %}
+
         <hr class="bg-danger border-3 border-top border-dark" />
         <h2 class="mt-3 text-center">Data Foto Diproses</h2>
         <table id="foldersTable" class="table table-hover">

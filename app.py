@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request
-import cv2
-import numpy as np
+from ocr_process import *
+import time
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        action = request.form.get('action')
+        action = request.form['action']
+        image = request.files['image']
+        
         if action == 'Masuk':
             # Tangani aksi 'Masuk' di sini
             print("Masuk")
@@ -15,17 +17,14 @@ def index():
             # Tangani aksi 'Keluar' di sini
             print("Keluar")
             
-        # Lanjutkan dengan logika pemrosesan lainnya jika diperlukan
-    return render_template('index.html', folders_info=get_folders_info())
+        time_str = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+        
+        
+    return render_template('index.html')
 
 def get_folders_info():
     # Implementasikan fungsi ini sesuai kebutuhan untuk mengembalikan informasi folder
     return []
-
-
-@app.route('/cam')
-def cam():
-    return render_template('cam.html')
 
 if __name__ == '__main__':
     # Run Flask with SSL

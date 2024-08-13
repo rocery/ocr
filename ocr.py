@@ -3,7 +3,8 @@ import numpy as np
 import easyocr
 
 reader = easyocr.Reader(['en'])
-image = cv2.imread('pic/contoh1.png')
+image = cv2.imread('17235354573993791083819967058442.jpg')
+image = cv2.resize(image, None, fx=0.1, fy=0.1, interpolation=cv2.INTER_CUBIC)
 
 # result = ocr.ocr(image, cls=True)
 # Perform OCR on the image
@@ -17,13 +18,14 @@ scores = [line[2] for line in result]
 print(len(txts))
 
 plat = []
-reject = [" ", ".", ",", ":", "-", "/"]
+reject = [" ", "."]
 
 for data in txts:
-    if any(char in data for char in reject):
-        continue  # Skip this data if it contains any of the reject characters
-    else:
-        plat.append(data)
+    plat.append(data)
+    # if any(char in data for char in reject):
+    #     continue  # Skip this data if it contains any of the reject characters
+    # else:
+    #     plat.append(data)
 
 print(plat)
 
