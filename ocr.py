@@ -3,8 +3,8 @@ import numpy as np
 import easyocr
 
 reader = easyocr.Reader(['en'])
-image = cv2.imread('17235354573993791083819967058442.jpg')
-image = cv2.resize(image, None, fx=0.1, fy=0.1, interpolation=cv2.INTER_CUBIC)
+image = cv2.imread('pic/4.jpg')
+# image = cv2.resize(image, None, fx=0.1, fy=0.1, interpolation=cv2.INTER_CUBIC)
 
 # result = ocr.ocr(image, cls=True)
 # Perform OCR on the image
@@ -21,11 +21,11 @@ plat = []
 reject = [" ", "."]
 
 for data in txts:
-    plat.append(data)
-    # if any(char in data for char in reject):
-    #     continue  # Skip this data if it contains any of the reject characters
-    # else:
-    #     plat.append(data)
+    # plat.append(data)
+    if any(char in data for char in reject):
+        continue  # Skip this data if it contains any of the reject characters
+    else:
+        plat.append(data)
 
 print(plat)
 

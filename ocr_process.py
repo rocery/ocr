@@ -6,10 +6,87 @@ import re
 import csv
 import os
 import time
+import base64
+from io import BytesIO
 
 reader = easyocr.Reader(['en', 'id'], gpu=False)
 plat = []
-csv_data_photo_uploaded = 'img/photo_uploaded.csv'
+csv_data_photo_uploaded = 'pic/photo_uploaded.csv'
+folder_path = 'pic/upload/'
+
+def image_preprocess(image, category, time_str, quality=50, compress_level=9):
+    filename = image.filename
+    
+    # Open the image with PIL to handle EXIF data and save later
+    pil_image = Image.open(image.stream)
+    
+    # Rotate image if needed based on EXIF orientation
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = pil_image._getexif()
+        if exif is not None:
+            orientation = exif.get(orientation, 1)
+            if orientation == 3:
+                pil_image = pil_image.rotate(180, expand=True)
+            elif orientation == 6:
+                pil_image = pil_image.rotate(270, expand=True)
+            elif orientation == 8:
+                pil_image = pil_image.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # Handle cases where the image doesn't have EXIF data
+        pass
+
+    # Convert the PIL image to a NumPy array for OpenCV processing
+    image = np.array(pil_image)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    
+    # Define the original path to save the image
+    global folder_path
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    
+    original_path = os.path.join(folder_path, filename)
+
+    # Save the image in the appropriate format
+    if filename.lower().endswith(('.jpg', '.jpeg')):
+        pil_image.save(original_path, quality=quality, optimize=True, progressive=True)
+    elif filename.lower().endswith('.png'):
+        pil_image.save(original_path, compress_level=compress_level, optimize=True)
+    
+    # Call to data_photo_uploaded (assuming it's defined elsewhere)
+    data_photo_uploaded(csv_data_photo_uploaded, original_path, time_str, category)
+    
+    return image
+        
+def data_photo_uploaded(csv_file_path, photo_path, time_upload, category):
+    # Check if the file exists; if not, create it and write the header
+    if not os.path.exists(csv_file_path):
+        with open(csv_file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['photo_path', 'time_upload', 'category'])
+    
+    # Append the new row to the CSV file
+    with open(csv_file_path, mode='a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([photo_path, time_upload, category])
+        
+def numpy_to_base64(image_np):
+    # Convert NumPy array to PIL Image
+    pil_image = Image.fromarray(cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB))
+    
+    # Save the PIL image to a BytesIO buffer
+    buffer = BytesIO()
+    pil_image.save(buffer, format="JPEG")
+    
+    # Encode the image to base64
+    img_str = base64.b64encode(buffer.getvalue()).decode()
+    
+    return f"data:image/jpeg;base64,{img_str}"
+
+
+
 
 
 def save_image(images, folder_path, quality=40, compress_level=4):
@@ -56,14 +133,6 @@ def save_image(images, folder_path, quality=40, compress_level=4):
         
         time_str = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
         data_photo_uploaded(csv_data_photo_uploaded, mirrored_path, time_str)
-        
-def data_photo_uploaded(file, photo_path, time_upload):
-    with open(file, mode='a', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow([photo_path, time_upload])
-
-
-
 
 
 
