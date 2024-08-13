@@ -87,9 +87,3 @@ def for_video():
                 cap.release()
                 cv2.destroyAllWindows()
                 exit(0)
-
-if __name__ == '__main__':
-    img_dir = 'pic/4.jpg'
-    for_image(img_dir)
-    
-    # for_video()
