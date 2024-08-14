@@ -10,7 +10,7 @@ model = OwlViTForObjectDetection.from_pretrained(model_name)
 processor = OwlViTProcessor.from_pretrained(model_name)
 
 # Load the image and convert it to RGB if needed
-image_path = "/home/sastr/a_repo/ocr/pic/upload/WhatsApp Image 2024-08-14 at 1.30.56 PM.jpeg"
+image_path = "pic/upload/WhatsApp Image 2024-08-14 at 1.30.57 PM (2).jpeg"
 image = Image.open(image_path).convert("RGB")  # Ensure the image is in RGB format
 
 # Define the text prompt with a more specific query
@@ -32,9 +32,9 @@ boxes = results[0]["boxes"]
 scores = results[0]["scores"]
 labels = results[0]["labels"]
 
-# For debugging: print the bounding boxes and scores
-for i, (box, score) in enumerate(zip(boxes, scores)):
-    print(f"Box {i}: {box.tolist()}, Score: {score.item()}")
+# # For debugging: print the bounding boxes and scores
+# for i, (box, score) in enumerate(zip(boxes, scores)):
+#     print(f"Box {i}: {box.tolist()}, Score: {score.item()}")
 
 # Filter boxes by a lower score threshold (e.g., 0.3 for more boxes)
 threshold = 0.3

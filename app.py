@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from ocr_process import *
+from ocr_process_paddleocr import *
 import time
 from PIL import Image
 
