@@ -115,9 +115,8 @@ def predict(frame):
     boxes = [line[0] for line in result]
     txts = [line[1] for line in result]
     scores = [line[2] for line in result]
-    print(result)
     
-    reject = [".", ",", "'"]
+    reject = [".", ",", "'", "*"]
     global plat
     plat = []
     for data in txts:
@@ -128,25 +127,34 @@ def predict(frame):
             cleaned_string = cleaned_string.upper()
             plat.append(cleaned_string)
         print("Data: {}, cleaned string: {}".format(data, cleaned_string))
+        print("OCR : {}".format(plat))
         
     boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
     
     return [(box, txt, score) for box, txt, score in zip(boxes, txts, scores)]
 
+def fixed_colors():
+    """Return a fixed set of colors."""
+    return [(0, 0, 255), (255, 0, 0), (0, 0, 127), (63, 0, 127), (4, 38, 82)]
+
 def show_labels(frame, predictions):
     pil_image = Image.fromarray(frame)
     draw = ImageDraw.Draw(pil_image)
     
+    colors = fixed_colors()
+    
     for box, txt, score in predictions:
+        color = colors[np.random.randint(0, len(colors))]
         # Draw bounding box
-        img = cv2.polylines(frame, [box], isClosed=True, color=(0, 255, 0), thickness=2)
+        cv2.polylines(frame, [box], isClosed=True, color=color, thickness=2)
         
         # Calculate the position to put the text (top-left corner of the bounding box)
         x, y = box[0][0]
         
         # Overlay text and score on the image
         text = f'{txt} ({score:.2f})'
-        img = cv2.putText(frame, text, (x - 1, y + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, text, (x - 3, y - 3), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, text, (x - 3, y - 3), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
     
     del draw
     opencvimage = np.array(frame)
@@ -159,10 +167,9 @@ def save_image_ocr(image):
         os.makedirs(folder_ocr)
         
     global filename
-    folder_path = os.path.join(folder_upload, filename)
+    folder_path = os.path.join(folder_ocr, filename)
     
-    img = cv2.imwrite(folder_path, image)
-    return img
+    cv2.imwrite(folder_path, image)
 
 def ocr_enhancement(image):
     """
@@ -196,4 +203,4 @@ def ocr_enhancement(image):
     kernel = np.ones((1, 1), np.uint8)
     morphed = cv2.dilate(denoised, kernel, iterations=1)
 
-    return morphed
+    return contrast
