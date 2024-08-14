@@ -60,7 +60,7 @@ def image_preprocess(image, category, time_str, quality=100, compress_level=9):
 
     image = cv2.imread(original_path)
     # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = resize_image(image, 500)
+    image = resize_image(image, 700)
     # image = ocr_enhancement(image)
     cv2.imwrite(original_path, image)
     
