@@ -11,15 +11,18 @@ from io import BytesIO
 
 reader = easyocr.Reader(['en', 'id'], gpu=False)
 plat = []
+filename = []
 csv_data_photo_uploaded = 'pic/photo_uploaded.csv'
-folder_path = 'pic/upload/'
+folder_upload = 'pic/upload/'
+folder_ocr = 'pic/ocr/'
 
 def image_preprocess(image, category, time_str, quality=100, compress_level=9):
     # Define the original path to save the image
-    global folder_path
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-        
+    global folder_upload
+    if not os.path.exists(folder_upload):
+        os.makedirs(folder_upload)
+    
+    global filename
     filename = image.filename
     
     # Open the image with PIL to handle EXIF data and save later
@@ -43,7 +46,7 @@ def image_preprocess(image, category, time_str, quality=100, compress_level=9):
         # Handle cases where the image doesn't have EXIF data
         pass
     
-    original_path = os.path.join(folder_path, filename)
+    original_path = os.path.join(folder_upload, filename)
     # Save the image in the appropriate format
     if filename.lower().endswith(('.jpg', '.jpeg')):
         pil_image.save(original_path)
@@ -105,15 +108,8 @@ def resize_image(image, max_width):
     return resized_image
 
 def predict(frame):
-    # pil_image = Image.open(frame)
-
     # Konversi PIL image ke numpy array
     open_cv_image = np.array(frame)
-
-    # Convert RGB to BGR (jika diperlukan oleh OpenCV, tetapi tidak perlu jika menggunakan EasyOCR)
-    # open_cv_image = open_cv_image[:, :, ::-1].copy()
-    
-    # open_cv_image = cv2.resize(open_cv_image, None, fx=0.1, fy=0.1, interpolation=cv2.INTER_CUBIC)
     
     result = reader.readtext(open_cv_image)
     boxes = [line[0] for line in result]
@@ -132,6 +128,7 @@ def predict(frame):
             cleaned_string = cleaned_string.upper()
             plat.append(cleaned_string)
         print("Data: {}, cleaned string: {}".format(data, cleaned_string))
+        
     boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
     
     return [(box, txt, score) for box, txt, score in zip(boxes, txts, scores)]
@@ -149,12 +146,23 @@ def show_labels(frame, predictions):
         
         # Overlay text and score on the image
         text = f'{txt} ({score:.2f})'
-        img = cv2.putText(frame, text, (x + 5, y + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1, cv2.LINE_AA)
+        img = cv2.putText(frame, text, (x - 1, y + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2, cv2.LINE_AA)
     
     del draw
     opencvimage = np.array(frame)
     global plat
     return opencvimage, plat
+
+def save_image_ocr(image):
+    global folder_ocr
+    if not os.path.exists(folder_ocr):
+        os.makedirs(folder_ocr)
+        
+    global filename
+    folder_path = os.path.join(folder_upload, filename)
+    
+    img = cv2.imwrite(folder_path, image)
+    return img
 
 def ocr_enhancement(image):
     """

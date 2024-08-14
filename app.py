@@ -27,9 +27,11 @@ def index():
                 pred = predict(image)
                 show_label = show_labels(image, pred)
                 
-                data = numpy_to_base64(show_label[0])
+                # save image
+                img_ocr = save_image_ocr(show_label[0])
                 label = show_label[1]
-                    
+                data = numpy_to_base64(img_ocr)
+                
             except (IOError, SyntaxError):
                 flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')
                 return redirect(request.url)
