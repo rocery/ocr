@@ -10,6 +10,7 @@ app.secret_key = 'your_secret_key'
 def index():
     data  = None
     time_str = None
+    label = None
     if request.method == 'POST':
         action = request.form['action']
         image = request.files['image']
@@ -21,8 +22,14 @@ def index():
                 img.seek(0)
                 
                 time_str = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
-                image = image_preprocess(image, action, time_str)                
-                data = numpy_to_base64(image)
+                image = image_preprocess(image, action, time_str)
+                
+                pred = predict(image)
+                show_label = show_labels(image, pred)
+                
+                data = numpy_to_base64(show_label[0])
+                label = show_label[1]
+                    
             except (IOError, SyntaxError):
                 flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')
                 return redirect(request.url)
@@ -34,7 +41,7 @@ def index():
             # Tangani aksi 'Keluar' di sini
             print("Keluar")
             
-    return render_template('index.html', data=data)
+    return render_template('index.html', data=data, label=label)
 
 def get_folders_info():
     # Implementasikan fungsi ini sesuai kebutuhan untuk mengembalikan informasi folder
