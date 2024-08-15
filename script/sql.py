@@ -29,6 +29,15 @@ def get_ekspedisi(no_mobil):
     
     return result[0] if result else None
 
+# Function to connect to the iot database
+def get_tparkir_connection():
+    return mysql.connector.connect(
+        host='192.168.15.223',
+        user='admin',
+        password='itbekasioke',
+        database='iot'
+    )
+
 # Function to handle "masuk" (entry)
 def masuk(conn, tanggal, no_mobil, jam_masuk_pabrik, user_in):
     cursor = conn.cursor()

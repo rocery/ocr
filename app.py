@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
-from script.sql import *
+from script.sql import get_tparkir_connection, masuk, keluar
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'itbekasioke'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,7 +27,7 @@ def index():
                 img.seek(0)
                 image_format = img.format.lower()
                 
-                time_str = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+                time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 image = image_preprocess(image, action, time_str)
                 
                 pred = predict(image)
@@ -41,8 +41,8 @@ def index():
                 data = numpy_to_base64(show_label[0])
                 
                 
-                date_str = time.strftime("%d-%m-%Y", time.localtime())
-                custom_date_time = time.strftime("%d-%m-%Y-%H%M%S", time.localtime())
+                date_str = time.strftime("%Y-%m-%d", time.localtime())
+                custom_date_time = time.strftime("%Y-%m-%d-%H%M%S", time.localtime())
                 file_name = f"{label}_{action}_{custom_date_time}.{image_format}"
                 
                 # save_image_ocr(image, name_file, folder_date, time_input)
@@ -65,15 +65,6 @@ def index():
 def get_folders_info():
     # Implementasikan fungsi ini sesuai kebutuhan untuk mengembalikan informasi folder
     return []
-
-# Function to connect to the iot database
-def get_tparkir_connection():
-    return mysql.connector.connect(
-        host='192.168.15.223',
-        user='admin',
-        password='itbekasioke',
-        database='iot'
-    )
 
 if __name__ == '__main__':
     # Run Flask with SSL

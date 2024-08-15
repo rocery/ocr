@@ -8,15 +8,13 @@ from io import BytesIO
 from paddleocr import PaddleOCR
 from script.char_prosess import character_cleaning, character_process
 
-# Initialize PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang='en')
-
-# reader = easyocr.Reader(['en', 'id'], gpu=False)
 plat = []
 filename = []
 csv_data_photo_uploaded = 'pic/photo_uploaded.csv'
 folder_upload = 'pic/upload/'
 folder_ocr = 'pic/ocr/'
+csv_all_data_ocr = 'pic/ocr/all_data_ocr.csv'
 
 def image_preprocess(image, category, time_str, quality=100, compress_level=9):
     # Define the original path to save the image
@@ -86,11 +84,20 @@ def data_photo_ocr(csv_file_path, photo_path, time_ocr, text_ocr, category):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(['photo_path', 'ocr', 'category', 'time_ocr'])
-    
     # Append the new row to the CSV file
     with open(csv_file_path, mode='a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([photo_path, text_ocr, category, time_ocr])
+    
+    # Check if the file exists; if not, create it and write the header
+    if not os.path.exists(csv_all_data_ocr):
+        with open(csv_all_data_ocr, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['ocr', 'category', 'time_ocr'])
+    # Append the new row to the CSV file
+    with open(csv_all_data_ocr, mode='a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([text_ocr, category, time_ocr])
         
 def numpy_to_base64(image_np):
     # Convert NumPy array to PIL Image
@@ -190,7 +197,7 @@ def show_labels(frame, predictions):
     
     del draw
     opencvimage = np.array(frame)
-    global plat
+    # global plat
     return opencvimage, plat
 
 def save_image_ocr(image, file_name, folder_date, time_input, label, action):
