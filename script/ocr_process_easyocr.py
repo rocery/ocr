@@ -116,7 +116,7 @@ def predict(frame):
     txts = [line[1] for line in result]
     scores = [line[2] for line in result]
     
-    reject = [".", ",", "'", "*"]
+    reject = [".", ",", "'", "*", "-"]
     global plat
     plat = []
     for data in txts:

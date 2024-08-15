@@ -1,13 +1,12 @@
 import numpy as np
 import cv2
 from PIL import Image, ImageDraw, ExifTags
-import re
 import csv
 import os
-import time
 import base64
 from io import BytesIO
 from paddleocr import PaddleOCR
+from script.char_prosess import character_cleaning, character_process
 
 # Initialize PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang='en')
@@ -111,34 +110,47 @@ def resize_image(image, max_width):
     return resized_image
 
 def predict(frame):
-    # Convert PIL image to numpy array
-    open_cv_image = np.array(frame)
-    
-    # Perform OCR using PaddleOCR
-    result = ocr.ocr(open_cv_image, cls=True)
-
-    # Extract the bounding boxes, texts, and confidence scores
-    boxes = [line[0] for line in result[0]]
-    txts = [line[1][0] for line in result[0]]
-    scores = [line[1][1] for line in result[0]]
-
-    reject = [".", ",", "'", "*", "-"]
-    global plat
-    plat = []
-    for data in txts:
-        if any(char in data for char in reject):
-            continue
-        else:
-            cleaned_string = re.sub(r'[^\w\s\n]', '', data)
-            cleaned_string = cleaned_string.upper()
-            plat.append(cleaned_string)
-        print("Data: {}, cleaned string: {}".format(data, cleaned_string))
-        print("OCR : {}".format(plat))
+    try:
+        # Convert PIL image to numpy array
+        open_cv_image = np.array(frame)
         
-    # Convert boxes to the required format
-    boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
+        # Perform OCR using PaddleOCR
+        result = ocr.ocr(open_cv_image, cls=True)
+        
+        # Check if result is None
+        if result is None:
+            raise ValueError("OCR result is None. Please check the input image and OCR settings.")
+
+        # Extract the bounding boxes, texts, and confidence scores
+        boxes = [line[0] for line in result[0]]
+        txts = [line[1][0] for line in result[0]]
+        scores = [line[1][1] for line in result[0]]
+
+        reject = [".", ",", "'", "*", "-"]
+        global plat
+        plat = []
+        for data in txts:
+            if any(char in data for char in reject) or data[0] == '0':
+                continue
+            else:
+                cleaned_string = character_cleaning(data)
+                plat.append(cleaned_string)
+            print(f"Data: {data}, cleaned string: {cleaned_string}")
+
+        print(f"Pla: {plat}")
+        plat = character_process(plat)
+        print(f"OCR: {plat}")
+
+        # Convert boxes to the required format
+        boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
+
+        return [(box, txt, score) for box, txt, score in zip(boxes, txts, scores)]
     
-    return [(box, txt, score) for box, txt, score in zip(boxes, txts, scores)]
+    except Exception as e:
+        # Handle the error (e.g., log it, return a default value, etc.)
+        print(f"Error in OCR prediction: {e}")
+        # Return empty results or handle according to your needs
+        return False
 
 def fixed_colors():
     """Return a fixed set of colors."""
@@ -169,7 +181,7 @@ def show_labels(frame, predictions):
     global plat
     return opencvimage, plat
 
-def save_image_ocr(image):
+def save_image_ocr(image, label, action, time_str, image_format):
     global folder_ocr
     if not os.path.exists(folder_ocr):
         os.makedirs(folder_ocr)

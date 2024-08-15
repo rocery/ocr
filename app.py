@@ -11,6 +11,8 @@ def index():
     data  = None
     time_str = None
     label = None
+    image_format = None
+    
     if request.method == 'POST':
         action = request.form['action']
         image = request.files['image']
@@ -20,17 +22,26 @@ def index():
                 img = Image.open(image.stream)
                 img.verify()
                 img.seek(0)
+                image_format = img.format.lower()
                 
                 time_str = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
                 image = image_preprocess(image, action, time_str)
                 
                 pred = predict(image)
-                show_label = show_labels(image, pred)
                 
-                # save image
-                save_image_ocr(show_label[0])
+                if pred == False:
+                    flash('Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload.', 'danger')
+                    return redirect(request.url)
+                
+                show_label = show_labels(image, pred)                
                 label = show_label[1]
                 data = numpy_to_base64(show_label[0])
+                
+                # save image
+                save_image_ocr(show_label[0], label, action, time_str, image_format)
+                
+                
+
                 
             except (IOError, SyntaxError):
                 flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')
