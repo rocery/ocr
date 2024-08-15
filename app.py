@@ -11,6 +11,8 @@ def index():
     data  = None
     time_str = None
     label = None
+    date_str = None
+    custom_date_time = None
     image_format = None
     
     if request.method == 'POST':
@@ -37,11 +39,13 @@ def index():
                 label = show_label[1]
                 data = numpy_to_base64(show_label[0])
                 
-                # save image
-                save_image_ocr(show_label[0], label, action, time_str, image_format)
                 
+                date_str = time.strftime("%d-%m-%Y", time.localtime())
+                custom_date_time = time.strftime("%d-%m-%Y-%H%M%S", time.localtime())
+                file_name = f"{label}_{action}_{custom_date_time}.{image_format}"
                 
-
+                # save_image_ocr(image, name_file, folder_date, time_input)
+                save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
                 
             except (IOError, SyntaxError):
                 flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')

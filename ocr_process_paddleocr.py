@@ -80,6 +80,18 @@ def data_photo_uploaded(csv_file_path, photo_path, time_upload, category):
         writer = csv.writer(f)
         writer.writerow([photo_path, time_upload, category])
         
+def data_photo_ocr(csv_file_path, photo_path, time_ocr, text_ocr, category):
+    # Check if the file exists; if not, create it and write the header
+    if not os.path.exists(csv_file_path):
+        with open(csv_file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['photo_path', 'ocr', 'category', 'time_ocr'])
+    
+    # Append the new row to the CSV file
+    with open(csv_file_path, mode='a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([photo_path, text_ocr, category, time_ocr])
+        
 def numpy_to_base64(image_np):
     # Convert NumPy array to PIL Image
     pil_image = Image.fromarray(cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB))
@@ -181,15 +193,19 @@ def show_labels(frame, predictions):
     global plat
     return opencvimage, plat
 
-def save_image_ocr(image, label, action, time_str, image_format):
-    global folder_ocr
-    if not os.path.exists(folder_ocr):
-        os.makedirs(folder_ocr)
-        
-    global filename
-    folder_path = os.path.join(folder_ocr, filename)
+def save_image_ocr(image, file_name, folder_date, time_input, label, action):
+    csv = f"{folder_date}.csv"
+    folder_path = os.path.join(folder_ocr, folder_date)
+    csv_path = os.path.join(folder_ocr, csv)
     
-    cv2.imwrite(folder_path, image)
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        
+    file_path = os.path.join(folder_path, file_name)
+    
+    data_photo_ocr(csv_path, file_path, time_input, label, action)
+    
+    cv2.imwrite(file_path, image)
 
 def ocr_enhancement(image):
     # Convert to grayscale
