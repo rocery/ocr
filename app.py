@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
+from script.sql import *
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -50,19 +51,29 @@ def index():
             except (IOError, SyntaxError):
                 flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')
                 return redirect(request.url)
-            
-        if action == 'Masuk':
-            # Tangani aksi 'Masuk' di sini
-            print("Masuk")
+        
+        conn = get_tparkir_connection()
+        if action == 'Masuk': 
+            # masuk(conn, '2024-08-15', a, '08:56:12', 'SASTRA')
+            masuk(conn, date_str, label, time_str, 'security')
         elif action == 'Keluar':
-            # Tangani aksi 'Keluar' di sini
-            print("Keluar")
+            # keluar(conn, a, custom_tanggal_keluar, '12:34:56', 'ADI'
+            keluar(conn, label, date_str, time_str, 'security')
             
     return render_template('index.html', data=data, label=label)
 
 def get_folders_info():
     # Implementasikan fungsi ini sesuai kebutuhan untuk mengembalikan informasi folder
     return []
+
+# Function to connect to the iot database
+def get_tparkir_connection():
+    return mysql.connector.connect(
+        host='192.168.15.223',
+        user='admin',
+        password='itbekasioke',
+        database='iot'
+    )
 
 if __name__ == '__main__':
     # Run Flask with SSL
