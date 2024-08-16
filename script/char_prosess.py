@@ -31,3 +31,11 @@ def character_process(data):
         data = [item for sublist in data for item in sublist]
         data = ''.join(data)
         return data
+
+def character_check(data):
+    # Regex pattern: ^[A-Za-z]{1,2}\d{1,4}[A-Za-z]{1,3}$
+    pattern = r'^[A-Z]{1,2}\d{1,4}[A-Z]{1,3}$'
+    if re.match(pattern, data):
+        return True
+    else:
+        return False

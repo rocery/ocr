@@ -7,6 +7,7 @@ import base64
 from io import BytesIO
 from paddleocr import PaddleOCR
 from script.char_prosess import character_cleaning, character_process
+from datetime import datetime
 
 ocr = PaddleOCR(use_angle_cls=True, lang='en')
 plat = []
@@ -98,6 +99,18 @@ def data_photo_ocr(csv_file_path, photo_path, time_ocr, text_ocr, category):
     with open(csv_all_data_ocr, mode='a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([text_ocr, category, time_ocr])
+
+def data_photo_failed(photo_path, ocr, time_upload, category):
+    # Check if the file exists; if not, create it and write the header
+    if not os.path.exists('pic/photo_failed.csv'):
+        with open('pic/photo_failed.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['photo_path', 'ocr', 'category', 'time_ocr'])
+    
+    # Append the new row to the CSV file
+    with open('pic/photo_failed.csv', mode='a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([photo_path, ocr, time_upload, category])
         
 def numpy_to_base64(image_np):
     # Convert NumPy array to PIL Image
@@ -225,3 +238,22 @@ def ocr_enhancement(image):
     enhanced = cv2.equalizeHist(blurred)
 
     return enhanced
+
+def read_data_csv():
+    data = []
+    file_path = 'pic/ocr/all_data_ocr.csv'
+
+    # Membaca data dari file ocr.csv
+    with open(file_path, newline='') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=',')
+        header = next(csvreader)  # Skip the header row
+        for row in csvreader:
+            data.append(row)
+            
+    # Ambil 100 data terbaru
+    recent_data = data[-100:]
+    
+    # Tambahkan nomor urut secara menurun
+    numbered_data = [[i + 1, *row] for i, row in enumerate(recent_data[::-1])]
+
+    return numbered_data
