@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCR | STTB</title>
-    <link rel="icon" href="{{ url_for('static', filename='img/ViewfinderCircle.svg') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/ocr.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='dataTables/dataTables.bootstrap5.css') }}">
     <style>
@@ -20,7 +20,7 @@
 <body>
     <div class="container mt-2">
         <h3 class="text-center">OCR</h3>
-        <form id="actionForm" action="/" method="post" enctype="multipart/form-data">
+        <form id="actionForm" action="/ocr" method="post" enctype="multipart/form-data">
             <div class="mb-3 text-center">
                 <label for="image" class="form-label">Pilih Gambar yang Akan Diproses</label>
                 <input class="form-control" type="file" id="image" name="image" capture="environment" accept="image/*;capture=environment" onchange="previewImage(event)">
@@ -121,9 +121,6 @@
                 lengthMenu: '_MENU_  Data Per Halaman',
                 info: 'Menampilkan _START_ hingga _END_ dari total _TOTAL_ data',
                 infoEmpty: 'Menampilkan 0 hingga 0 dari 0 data',
-            },
-            createdRow: function(row, data, dataIndex) {
-                $(row).css('font-size', '80%'); // Mengubah ukuran font di seluruh row
             }
         });
     });

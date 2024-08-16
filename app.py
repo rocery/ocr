@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
@@ -7,9 +7,24 @@ from script.char_prosess import character_check
 
 app = Flask(__name__)
 app.secret_key = 'itbekasioke'
+USER_SECRET_KEY = 'user123'
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        secret_key = request.form.get('secret_key')
+        if secret_key == USER_SECRET_KEY:
+            session['authenticated'] = True
+            return redirect(url_for('ocr'))
+        else:
+            flash('Password salah, silahkan coba kembali.', 'danger')
+    
+    return render_template('login.html')
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/ocr', methods=['GET', 'POST'])
+def ocr():
+    if not session.get('authenticated'):
+        return redirect(url_for('login'))
+    
     data  = None
     time_str = None
     label = None
@@ -45,7 +60,7 @@ def index():
                     sql_output = 'Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload.'
                     message_type = 'danger'
                     flash(sql_output, message_type)
-                    return render_template('index.html', csv_data=csv_data, message=sql_output, message_type=message_type)
+                    return render_template('ocr.html', csv_data=csv_data, message=sql_output, message_type=message_type)
                 
                 show_label = show_labels(image, pred)                
                 label = show_label[1]
@@ -54,7 +69,7 @@ def index():
                     sql_output = 'Plat Nomor Pada Foto Tidak Valid. Silahkan Ulangi Proses Upload.'
                     message_type = 'danger'
                     flash(sql_output, message_type)
-                    return render_template('index.html', label=label, csv_data=csv_data, message=sql_output, message_type=message_type)
+                    return render_template('ocr.html', label=label, csv_data=csv_data, message=sql_output, message_type=message_type)
                 
                 data = numpy_to_base64(show_label[0])
                 
@@ -76,7 +91,7 @@ def index():
             status = masuk(conn, date_str, label, time_str, 'security')
             
             if status == 'inside':
-                sql_output = 'Status Terakhir Kendaraan {}: "Didalam/Masuk"\nTidak Bisa Diproses "Masuk". Perlu Proses "Keluar".'.format(label)
+                sql_output = 'Status Terakhir Kendaraan {}: "Didalam/Masuk".\nTidak Bisa Diproses "Masuk". Perlu Proses "Keluar".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
             elif status == 'noeks':
@@ -107,12 +122,9 @@ def index():
         save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
     else:
         data_photo_failed(file_name, label, time_str, action)
-        
-    return render_template('index.html', data=data, label=label, message = sql_output, message_type = message_type, csv_data=csv_data)
-
-def get_folders_info():
-    # Implementasikan fungsi ini sesuai kebutuhan untuk mengembalikan informasi folder
-    return []
+    
+    csv_data = read_data_csv()    
+    return render_template('ocr.html', data=data, label=label, message = sql_output, message_type = message_type, csv_data=csv_data)
 
 if __name__ == '__main__':
     # Run Flask with SSL
