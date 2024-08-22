@@ -46,7 +46,6 @@ def ocr():
         image = request.files['image']
         
         if image:
-            
             try:
                 img = Image.open(image.stream)
                 img.verify()
@@ -54,8 +53,14 @@ def ocr():
                 image_format = img.format.lower()
                 time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 image = image_preprocess(image, action, time_str)
-                # print(type(image))
-                image = detect_and_return_cropped_license_plate(image)
+                
+                try:
+                    image = detect_and_return_cropped_license_plate(image)
+                except:
+                    sql_output = 'Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload.'
+                    message_type = 'danger'
+                    flash(sql_output, message_type)
+                    return render_template('ocr.html', csv_data=csv_data, message=sql_output, message_type=message_type)
                 
                 pred = predict(image)
                 

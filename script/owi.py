@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from transformers import OwlViTProcessor, OwlViTForObjectDetection
 
-def detect_and_return_cropped_license_plate(image_np, model_name="google/owlvit-base-patch32", text_queries=None, threshold=0.3):
+def detect_and_return_cropped_license_plate(image_np, model_name="google/owlvit-base-patch32", text_queries=None, threshold=0.2):
     if text_queries is None:
         text_queries = ["car license plate", "vehicle registration plate"]
 
