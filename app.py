@@ -4,12 +4,13 @@ import time
 from PIL import Image
 from script.sql import get_tparkir_connection, masuk, keluar
 from script.char_prosess import character_check
+from script.owi import detect_and_return_cropped_license_plate
 
 app = Flask(__name__)
 app.secret_key = 'itbekasioke'
 USER_SECRET_KEY = 'user123'
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/login_ocr', methods=['GET', 'POST'])
+def login_ocr():
     if request.method == 'POST':
         secret_key = request.form.get('secret_key')
         if secret_key == USER_SECRET_KEY:
@@ -23,7 +24,7 @@ def login():
 @app.route('/ocr', methods=['GET', 'POST'])
 def ocr():
     if not session.get('authenticated'):
-        return redirect(url_for('login'))
+        return redirect(url_for('login_ocr'))
     
     data  = None
     time_str = None
@@ -45,14 +46,16 @@ def ocr():
         image = request.files['image']
         
         if image:
+            
             try:
                 img = Image.open(image.stream)
                 img.verify()
                 img.seek(0)
                 image_format = img.format.lower()
-                
                 time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 image = image_preprocess(image, action, time_str)
+                # print(type(image))
+                image = detect_and_return_cropped_license_plate(image)
                 
                 pred = predict(image)
                 
@@ -99,7 +102,7 @@ def ocr():
                 message_type = 'warning'
                 ocr_ = True
             else:
-                sql_output = 'Kendaraan {} Berhasil "Masuk"\nEkspedisi: {},'.format(label, status)
+                sql_output = 'Kendaraan {} Berhasil "Masuk"\nEkspedisi: {}.'.format(label, status)
                 message_type = 'success'
                 ocr_ = True
                 

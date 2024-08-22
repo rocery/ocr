@@ -11,6 +11,7 @@ def character_cleaning(data):
         txt = ''.join([char for char in data if not char.islower() and char != ' '])
         txt = re.sub(r'[^A-Z0-9]', '', data)
         result.append(txt)
+        print(txt)
         return result
     
     else:

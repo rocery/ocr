@@ -9,7 +9,7 @@ from paddleocr import PaddleOCR
 from script.char_prosess import character_cleaning, character_process
 from datetime import datetime
 
-ocr = PaddleOCR(use_angle_cls=True, lang='en')
+ocr = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en")
 plat = []
 filename = []
 csv_data_photo_uploaded = 'pic/photo_uploaded.csv'
@@ -58,7 +58,7 @@ def image_preprocess(image, category, time_str, quality=100, compress_level=9):
 
     image = cv2.imread(original_path)
     # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = resize_image(image, 700)
+    # image = resize_image(image, 1500)
     # image = ocr_enhancement(image)
     cv2.imwrite(original_path, image)
     
@@ -144,10 +144,15 @@ def resize_image(image, max_width):
 def predict(frame):
     try:
         # Convert PIL image to numpy array
-        open_cv_image = np.array(frame)
+        # open_cv_image = np.array(frame)
         
         # Perform OCR using PaddleOCR
-        result = ocr.ocr(open_cv_image, cls=True)
+        
+        try:
+            result = OCR.ocr(frame, cls=True) 
+        except:
+            OCR = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en")
+            result = OCR.ocr(frame, cls=False)
         
         # Check if result is None
         if result is None:
@@ -158,7 +163,7 @@ def predict(frame):
         txts = [line[1][0] for line in result[0]]
         scores = [line[1][1] for line in result[0]]
 
-        reject = [".", ",", "'", "*", "-"]
+        reject = []
         global plat
         plat = []
         for data in txts:
