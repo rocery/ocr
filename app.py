@@ -81,7 +81,6 @@ def ocr():
                 
                 data = numpy_to_base64(show_label[0])
                 
-                
                 date_str = time.strftime("%Y-%m-%d", time.localtime())
                 custom_date_time = time.strftime("%Y-%m-%d-%H%M%S", time.localtime())
                 file_name = f"{label}_{action}_{custom_date_time}.{image_format}"
