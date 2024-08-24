@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
-from script.sql import get_tparkir_connection, masuk, keluar
+from script.sql import get_tparkir_connection, masuk, keluar, get_data_ocr
 from script.char_prosess import character_check
 from script.owi import detect_and_return_cropped_license_plate
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'itbekasioke'
@@ -132,6 +133,11 @@ def ocr():
     
     csv_data = read_data_csv()    
     return render_template('ocr.html', data=data, label=label, message = sql_output, message_type = message_type, csv_data=csv_data)
+
+@app.route('/data_ocr')
+def data_ocr():
+    data_ocr = get_data_ocr()
+    return render_template('data_ocr.html', data_ocr=data_ocr, datetime=datetime)
 
 if __name__ == '__main__':
     # Run Flask with SSL

@@ -107,7 +107,20 @@ def readCSV(filename):
         reader = csv.reader(file)
 
 
-
+def get_data_ocr():
+    conn = get_tparkir_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT tanggal, ekspedisi, no_mobil, jam_masuk_pabrik, user_in, tanggal_keluar, jam_keluar, user_out
+        FROM test
+    """)
+    result = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return result
 
 # Example usage in another script
 # if __name__ == "__main__":
