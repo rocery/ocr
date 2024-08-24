@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data OCR | STTB</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/ocr.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dataTables/dataTables.bootstrap5.css') }}">
+    <style>
+        /* CSS untuk memusatkan teks dan mengatur ukuran font */
+        #foldersTable {
+            font-size: 80%;
+        }
+        #foldersTable td, #foldersTable th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-2">
+        <h3 class="mt-3 text-center">Data Plat Nomor - OCR</h3>
+
+        <div class="text-center">
+            <a href="{{ url_for('ocr') }}" class="link-underline-primary">OCR</a>
+        </div>
+
+        {% if data_ocr %}
+        <table id="foldersTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Ekspedisi</th>
+                    <th>No Mobil</th>
+                    <th>Jam Masuk Pabrik</th>
+                    <!-- <th>User In</th> -->
+                    <th>Tanggal Keluar</th>
+                    <th>Jam Keluar</th>
+                    <!-- <th>User Out</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data_ocr %}
+                <tr>
+                    <td>{{ row[0].strftime('%Y-%m-%d') if row[0] else 'NULL' }}</td>
+                    <td>{{ row[1] if row[1] else 'NULL' }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ (datetime.datetime.min + row[3]).time().strftime('%H:%M:%S') if row[3] else 'NULL' }}</td>
+                    <!-- <td>{{ row[4] }}</td> -->
+                    <td>{{ row[5].strftime('%Y-%m-%d') if row[5] else 'NULL' }}</td>
+                    <td>{{ (datetime.datetime.min + row[6]).time().strftime('%H:%M:%S') if row[6] else 'NULL' }}</td>
+                    <!-- <td>{{ row[7] }}</td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No data available.</p>
+        {% endif %}
+
+    </div>
+
+    </div>
+</body>
+
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='dataTables/dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='dataTables/dataTables.bootstrap5.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#foldersTable').DataTable({
+            ordering: true, // Disable sorting
+            paging: true,
+            pageLength: 10,
+            lengthMenu: [ 10, 20, 50, 100 ],
+            language: {
+                search: 'Cari Data',
+                lengthMenu: '_MENU_  Data Per Halaman',
+                info: 'Menampilkan _START_ hingga _END_ dari total _TOTAL_ data',
+                infoEmpty: 'Menampilkan 0 hingga 0 dari 0 data',
+            }
+        });
+    });
+</script>
