@@ -136,6 +136,9 @@ def ocr():
 
 @app.route('/data_ocr')
 def data_ocr():
+    if not session.get('authenticated'):
+        return redirect(url_for('login_ocr'))
+    
     data_ocr = get_data_ocr()
     return render_template('data_ocr.html', data_ocr=data_ocr, datetime=datetime)
 
