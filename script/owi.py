@@ -45,7 +45,7 @@ def detect_and_return_cropped_license_plate(image_np, model_name="google/owlvit-
 
     # Adjust the ymax to get 3/4 of the height from the top
     height = ymax - ymin
-    ymax = ymin + int(0.7 * height)
+    ymax = ymin + int(0.75 * height)
 
     # Crop the image based on the adjusted bounding box
     cropped_image_np = image_np[ymin:ymax, xmin:xmax]
