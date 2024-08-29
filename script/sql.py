@@ -114,6 +114,8 @@ def get_data_ocr():
     cursor.execute("""
         SELECT tanggal, ekspedisi, no_mobil, jam_masuk_pabrik, user_in, tanggal_keluar, jam_keluar, user_out
         FROM test
+        ORDER BY tanggal DESC
+        LIMIT 100
     """)
     result = cursor.fetchall()
     

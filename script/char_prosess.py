@@ -35,7 +35,7 @@ def character_process(data):
 
 def character_check(data):
     # Regex pattern: ^[A-Za-z]{1,2}\d{1,4}[A-Za-z]{1,3}$
-    pattern = r'^[A-Z]{1,2}\d{1,4}[A-Z]{1,3}$'
+    pattern = r'^[A-Z]{1,2}(?!0)\d{1,4}[A-Z]{1,3}$'
     if re.match(pattern, data):
         return True
     else:
