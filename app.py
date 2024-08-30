@@ -58,7 +58,7 @@ def ocr():
                 try:
                     image = detect_and_return_cropped_license_plate(image)
                 except:
-                    sql_output = 'Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload.'
+                    sql_output = 'Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload. Error Code: 0x1'
                     message_type = 'danger'
                     flash(sql_output, message_type)
                     return render_template('ocr.html', csv_data=csv_data, message=sql_output, message_type=message_type)
@@ -66,7 +66,7 @@ def ocr():
                 pred = predict(image)
                 
                 if pred == False:
-                    sql_output = 'Tidak Terdeteksi Plat Nomor Pada Gambar. Silahkan Ulangi Proses Upload.'
+                    sql_output = 'Tidak Terdeteksi Huruf-Angka Pada Foro. Silahkan Ulangi Proses Upload. Erroe Code: 0x2'
                     message_type = 'danger'
                     flash(sql_output, message_type)
                     return render_template('ocr.html', csv_data=csv_data, message=sql_output, message_type=message_type)
@@ -76,7 +76,7 @@ def ocr():
                 data = numpy_to_base64(show_label[0])
                 
                 if character_check(label) == False:
-                    sql_output = 'Plat Nomor Pada Foto Tidak Valid/Salah Baca. Silahkan Foto Ulang lalu Ulangi Proses Upload.'
+                    sql_output = 'Plat Nomor Pada Foto Tidak Valid/Salah Baca. Silahkan Foto Ulang lalu Ulangi Proses Upload. Error Code: 0x3'
                     message_type = 'danger'
                     flash(sql_output, message_type)
                     return render_template('ocr.html', data=data, label=label, csv_data=csv_data, message=sql_output, message_type=message_type)
@@ -89,7 +89,7 @@ def ocr():
                 # save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
                 
             except (IOError, SyntaxError):
-                flash('File Yang Diupload Salah, Silahkan Ulangi Proses Upload.', 'danger')
+                flash('Foto Yang Diupload Salah, Silahkan Ulangi Proses Upload. Error Code: 0x4', 'danger')
                 return redirect(request.url)
         
         conn = get_tparkir_connection()
@@ -98,7 +98,7 @@ def ocr():
             status = masuk(conn, date_str, label, time_str, 'security')
             
             if status == 'inside':
-                sql_output = 'Status Terakhir Kendaraan {}: "Didalam/Masuk".\nTidak Bisa Diproses "Masuk". Perlu Proses "Keluar".'.format(label)
+                sql_output = 'Status Terakhir Kendaraan {}: "Didalam/Masuk".\nPerlu Proses "Keluar".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
             elif status == 'noeks':
@@ -115,7 +115,7 @@ def ocr():
             status = keluar(conn, label, date_str, time_str, 'security')
             
             if status == 'outside':
-                sql_output = 'Status Terakhir Kendaraan {}: "Diluar/Keluar/Tidak Ada".\nTidak Bisa Diproses "Keluar". Perlu Proses "Masuk".'.format(label)
+                sql_output = 'Status Terakhir Kendaraan {}: "Diluar/Keluar/Tidak Ada".\nPerlu Proses "Masuk".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
             else:
