@@ -125,9 +125,9 @@ def ocr():
         flash(sql_output, message_type)
         
         # save_image_ocr(image, name_file, folder_date, time_input)
-    if ocr_:
+    if ocr_ == True:
         save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
-    else:
+    elif ocr_ == False:
         data_photo_failed(file_name, label, time_str, action)
     
     csv_data = read_data_csv()    
