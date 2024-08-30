@@ -165,6 +165,11 @@ def predict(frame):
         boxes = [line[0] for line in sorted_result]
         txts = [line[1][0] for line in sorted_result]
         scores = [line[1][1] for line in sorted_result]
+        
+        # boxes_result = [line[0] for line in result]
+        
+        # print("BR: {}".format(boxes_result))
+        # print("B : {}".format(boxes))
 
         reject = []
         global plat
