@@ -73,14 +73,13 @@ def ocr():
                 
                 show_label = show_labels(image, pred)                
                 label = show_label[1]
+                data = numpy_to_base64(show_label[0])
                 
                 if character_check(label) == False:
-                    sql_output = 'Plat Nomor Pada Foto Tidak Valid/Salah Baca. Silahkan Foto Ulan lalu Ulangi Proses Upload.'
+                    sql_output = 'Plat Nomor Pada Foto Tidak Valid/Salah Baca. Silahkan Foto Ulang lalu Ulangi Proses Upload.'
                     message_type = 'danger'
                     flash(sql_output, message_type)
-                    return render_template('ocr.html', label=label, csv_data=csv_data, message=sql_output, message_type=message_type)
-                
-                data = numpy_to_base64(show_label[0])
+                    return render_template('ocr.html', data=data, label=label, csv_data=csv_data, message=sql_output, message_type=message_type)
                 
                 date_str = time.strftime("%Y-%m-%d", time.localtime())
                 custom_date_time = time.strftime("%Y-%m-%d-%H%M%S", time.localtime())

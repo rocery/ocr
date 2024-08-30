@@ -1,108 +1,50 @@
-[2024/08/30 08:17:05] ppocr DEBUG: Namespace(help='==SUPPRESS==', use_gpu=False, use_xpu=False, use_npu=False, use_mlu=False, ir_optim=True, use_tensorrt=False, min_subgraph_size=15, precision='fp32', gpu_mem=500, gpu_id=0, image_dir=None, page_num=0, det_algorithm='DB', det_model_dir='/home/sastra/.paddleocr/whl/det/en/en_PP-OCRv3_det_infer', det_limit_side_len=960, det_limit_type='max', det_box_type='quad', det_db_thresh=0.3, det_db_box_thresh=0.6, det_db_unclip_ratio=1.5, max_batch_size=10, use_dilation=False, det_db_score_mode='fast', det_east_score_thresh=0.8, det_east_cover_thresh=0.1, det_east_nms_thresh=0.2, det_sast_score_thresh=0.5, det_sast_nms_thresh=0.2, det_pse_thresh=0, det_pse_box_thresh=0.85, det_pse_min_area=16, det_pse_scale=1, scales=[8, 16, 32], alpha=1.0, beta=1.0, fourier_degree=5, rec_algorithm='SVTR_LCNet', rec_model_dir='/home/sastra/.paddleocr/whl/rec/en/en_PP-OCRv4_rec_infer', rec_image_inverse=True, rec_image_shape='3, 48, 320', rec_batch_num=6, max_text_length=25, rec_char_dict_path='/home/sastra/repo/ocr/venv/lib/python3.10/site-packages/paddleocr/ppocr/utils/en_dict.txt', use_space_char=True, vis_font_path='./doc/fonts/simfang.ttf', drop_score=0.5, e2e_algorithm='PGNet', e2e_model_dir=None, e2e_limit_side_len=768, e2e_limit_type='max', e2e_pgnet_score_thresh=0.5, e2e_char_dict_path='./ppocr/utils/ic15_dict.txt', e2e_pgnet_valid_set='totaltext', e2e_pgnet_mode='fast', use_angle_cls=False, cls_model_dir='/home/sastra/.paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer', cls_image_shape='3, 48, 192', label_list=['0', '180'], cls_batch_num=6, cls_thresh=0.9, enable_mkldnn=False, cpu_threads=10, use_pdserving=False, warmup=False, sr_model_dir=None, sr_image_shape='3, 32, 128', sr_batch_num=1, draw_img_save_dir='./inference_results', save_crop_res=False, crop_res_save_dir='./output', use_mp=False, total_process_num=1, process_id=0, benchmark=False, save_log_path='./log_output/', show_log=True, use_onnx=False, return_word_box=False, output='./output', table_max_len=488, table_algorithm='TableAttn', table_model_dir=None, merge_no_span_structure=True, table_char_dict_path=None, layout_model_dir=None, layout_dict_path=None, layout_score_threshold=0.5, layout_nms_threshold=0.5, kie_algorithm='LayoutXLM', ser_model_dir=None, re_model_dir=None, use_visual_backbone=True, ser_dict_path='../train_data/XFUND/class_list_xfun.txt', ocr_order_method=None, mode='structure', image_orientation=False, layout=True, table=True, ocr=True, recovery=False, use_pdf2docx_api=False, invert=False, binarize=False, alphacolor=(255, 255, 255), lang='en', det=True, rec=True, type='ocr', savefile=False, ocr_version='PP-OCRv4', structure_version='PP-StructureV2')
+[2024/08/30 09:27:41] ppocr DEBUG: Namespace(help='==SUPPRESS==', use_gpu=False, use_xpu=False, use_npu=False, use_mlu=False, ir_optim=True, use_tensorrt=False, min_subgraph_size=15, precision='fp32', gpu_mem=500, gpu_id=0, image_dir=None, page_num=0, det_algorithm='DB', det_model_dir='/home/sastra/.paddleocr/whl/det/en/en_PP-OCRv3_det_infer', det_limit_side_len=960, det_limit_type='max', det_box_type='quad', det_db_thresh=0.3, det_db_box_thresh=0.6, det_db_unclip_ratio=1.5, max_batch_size=10, use_dilation=False, det_db_score_mode='fast', det_east_score_thresh=0.8, det_east_cover_thresh=0.1, det_east_nms_thresh=0.2, det_sast_score_thresh=0.5, det_sast_nms_thresh=0.2, det_pse_thresh=0, det_pse_box_thresh=0.85, det_pse_min_area=16, det_pse_scale=1, scales=[8, 16, 32], alpha=1.0, beta=1.0, fourier_degree=5, rec_algorithm='SVTR_LCNet', rec_model_dir='/home/sastra/.paddleocr/whl/rec/en/en_PP-OCRv4_rec_infer', rec_image_inverse=True, rec_image_shape='3, 48, 320', rec_batch_num=6, max_text_length=25, rec_char_dict_path='/home/sastra/repo/ocr/venv/lib/python3.10/site-packages/paddleocr/ppocr/utils/en_dict.txt', use_space_char=True, vis_font_path='./doc/fonts/simfang.ttf', drop_score=0.5, e2e_algorithm='PGNet', e2e_model_dir=None, e2e_limit_side_len=768, e2e_limit_type='max', e2e_pgnet_score_thresh=0.5, e2e_char_dict_path='./ppocr/utils/ic15_dict.txt', e2e_pgnet_valid_set='totaltext', e2e_pgnet_mode='fast', use_angle_cls=False, cls_model_dir='/home/sastra/.paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer', cls_image_shape='3, 48, 192', label_list=['0', '180'], cls_batch_num=6, cls_thresh=0.9, enable_mkldnn=False, cpu_threads=10, use_pdserving=False, warmup=False, sr_model_dir=None, sr_image_shape='3, 32, 128', sr_batch_num=1, draw_img_save_dir='./inference_results', save_crop_res=False, crop_res_save_dir='./output', use_mp=False, total_process_num=1, process_id=0, benchmark=False, save_log_path='./log_output/', show_log=True, use_onnx=False, return_word_box=False, output='./output', table_max_len=488, table_algorithm='TableAttn', table_model_dir=None, merge_no_span_structure=True, table_char_dict_path=None, layout_model_dir=None, layout_dict_path=None, layout_score_threshold=0.5, layout_nms_threshold=0.5, kie_algorithm='LayoutXLM', ser_model_dir=None, re_model_dir=None, use_visual_backbone=True, ser_dict_path='../train_data/XFUND/class_list_xfun.txt', ocr_order_method=None, mode='structure', image_orientation=False, layout=True, table=True, ocr=True, recovery=False, use_pdf2docx_api=False, invert=False, binarize=False, alphacolor=(255, 255, 255), lang='en', det=True, rec=True, type='ocr', savefile=False, ocr_version='PP-OCRv4', structure_version='PP-StructureV2', use_direction_classify=True)
  * Serving Flask app 'app'
  * Debug mode: off
-[2024-08-30 08:17:10,978] [    INFO] _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+[2024-08-30 09:27:45,432] [    INFO] _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
  * Running on http://192.168.15.223:5000
-[2024-08-30 08:17:10,978] [    INFO] _internal.py:97 - [33mPress CTRL+C to quit[0m
-[2024-08-30 08:17:29,188] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:29] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:30,099] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:30,233] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "GET /static/img/ocr.png HTTP/1.1" 200 -
-[2024-08-30 08:17:30,308] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,311] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,318] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,327] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,341] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,343] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,366] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:30,368] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:30,737] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:30] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,234] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "GET /data_ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:36,314] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,373] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,379] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,388] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,398] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,399] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,400] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,411] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:36,526] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:36] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,225] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:37,317] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,328] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,329] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,332] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,333] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,334] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,354] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,365] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:17:37,388] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:17:37,472] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:17:37] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:00,851] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:00] "POST /ocr HTTP/1.1" 200 -
-[2024-08-30 08:18:00,944] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:00] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:00,950] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:00] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:00,990] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:00] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:00,992] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:00] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:01,015] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:01,025] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:01,034] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:01,037] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:18:01,039] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:18:01,179] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:18:01] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,927] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,929] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,932] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,933] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,934] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:28,935] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:28] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:29,034] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:29] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,558] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "GET /data_ocr HTTP/1.1" 200 -
-[2024-08-30 08:19:53,641] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,687] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,689] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,969] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,971] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,973] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,975] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:53,976] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:53] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:19:54,090] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:19:54] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:30:56,608] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "[32mGET /ocr HTTP/1.1[0m" 302 -
-[2024-08-30 08:30:56,673] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "GET /login_ocr HTTP/1.1" 200 -
-[2024-08-30 08:30:56,718] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:30:56,774] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:30:56,820] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:30:56,898] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:30:56] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,132] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[32mPOST /login_ocr HTTP/1.1[0m" 302 -
-[2024-08-30 08:31:02,217] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:31:02,339] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:31:02,421] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,465] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,506] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,535] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,542] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,558] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,560] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:31:02,584] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:31:02] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:03,987] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:03] "[32mGET /ocr HTTP/1.1[0m" 302 -
-[2024-08-30 08:32:04,130] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:04] "GET /login_ocr HTTP/1.1" 200 -
-[2024-08-30 08:32:04,285] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:04] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:04,338] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:04] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:04,367] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:04] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:04,388] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:04] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:09,821] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:09] "POST /login_ocr HTTP/1.1" 200 -
-[2024-08-30 08:32:09,941] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:09] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:09,942] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:09] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:09,989] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:09] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:09,991] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:09] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:29,777] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "[32mPOST /login_ocr HTTP/1.1[0m" 302 -
-[2024-08-30 08:32:29,836] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:32:29,918] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:29,919] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:29,975] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:29,977] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:29] "GET /ocr HTTP/1.1" 200 -
-[2024-08-30 08:32:30,018] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:30] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:30,020] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:30] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:30,021] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:30] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:30,025] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:30] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
-[2024-08-30 08:32:30,050] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 08:32:30] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,432] [    INFO] _internal.py:97 - [33mPress CTRL+C to quit[0m
+[2024-08-30 09:27:45,598] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "GET /ocr HTTP/1.1" 200 -
+[2024-08-30 09:27:45,687] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,687] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,687] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,690] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,768] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,768] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,770] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,771] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,785] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[36mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:45,844] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "GET /ocr HTTP/1.1" 200 -
+[2024-08-30 09:27:45,971] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:45] "[33mGET /static/js/popper.min.js.map HTTP/1.1[0m" 404 -
+[2024-08-30 09:27:46,171] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:46] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:47,938] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:47] "GET /ocr HTTP/1.1" 200 -
+[2024-08-30 09:27:48,040] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,043] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,044] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,046] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,167] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,168] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,169] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,171] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,185] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:48,238] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "GET /ocr HTTP/1.1" 200 -
+[2024-08-30 09:27:48,352] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[33mGET /static/js/popper.min.js.map HTTP/1.1[0m" 404 -
+[2024-08-30 09:27:48,520] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:48] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
+[2024-08-30 09:27:53,218] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:27:53] "GET /ocr HTTP/1.1" 200 -
+[2024/08/30 09:28:06] ppocr DEBUG: Namespace(help='==SUPPRESS==', use_gpu=False, use_xpu=False, use_npu=False, use_mlu=False, ir_optim=True, use_tensorrt=False, min_subgraph_size=15, precision='fp32', gpu_mem=500, gpu_id=0, image_dir=None, page_num=0, det_algorithm='DB', det_model_dir='/home/sastra/.paddleocr/whl/det/en/en_PP-OCRv3_det_infer', det_limit_side_len=960, det_limit_type='max', det_box_type='quad', det_db_thresh=0.3, det_db_box_thresh=0.6, det_db_unclip_ratio=1.5, max_batch_size=10, use_dilation=False, det_db_score_mode='fast', det_east_score_thresh=0.8, det_east_cover_thresh=0.1, det_east_nms_thresh=0.2, det_sast_score_thresh=0.5, det_sast_nms_thresh=0.2, det_pse_thresh=0, det_pse_box_thresh=0.85, det_pse_min_area=16, det_pse_scale=1, scales=[8, 16, 32], alpha=1.0, beta=1.0, fourier_degree=5, rec_algorithm='SVTR_LCNet', rec_model_dir='/home/sastra/.paddleocr/whl/rec/en/en_PP-OCRv4_rec_infer', rec_image_inverse=True, rec_image_shape='3, 48, 320', rec_batch_num=6, max_text_length=25, rec_char_dict_path='/home/sastra/repo/ocr/venv/lib/python3.10/site-packages/paddleocr/ppocr/utils/en_dict.txt', use_space_char=True, vis_font_path='./doc/fonts/simfang.ttf', drop_score=0.5, e2e_algorithm='PGNet', e2e_model_dir=None, e2e_limit_side_len=768, e2e_limit_type='max', e2e_pgnet_score_thresh=0.5, e2e_char_dict_path='./ppocr/utils/ic15_dict.txt', e2e_pgnet_valid_set='totaltext', e2e_pgnet_mode='fast', use_angle_cls=False, cls_model_dir='/home/sastra/.paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer', cls_image_shape='3, 48, 192', label_list=['0', '180'], cls_batch_num=6, cls_thresh=0.9, enable_mkldnn=False, cpu_threads=10, use_pdserving=False, warmup=False, sr_model_dir=None, sr_image_shape='3, 32, 128', sr_batch_num=1, draw_img_save_dir='./inference_results', save_crop_res=False, crop_res_save_dir='./output', use_mp=False, total_process_num=1, process_id=0, benchmark=False, save_log_path='./log_output/', show_log=True, use_onnx=False, return_word_box=False, output='./output', table_max_len=488, table_algorithm='TableAttn', table_model_dir=None, merge_no_span_structure=True, table_char_dict_path=None, layout_model_dir=None, layout_dict_path=None, layout_score_threshold=0.5, layout_nms_threshold=0.5, kie_algorithm='LayoutXLM', ser_model_dir=None, re_model_dir=None, use_visual_backbone=True, ser_dict_path='../train_data/XFUND/class_list_xfun.txt', ocr_order_method=None, mode='structure', image_orientation=False, layout=True, table=True, ocr=True, recovery=False, use_pdf2docx_api=False, invert=False, binarize=False, alphacolor=(255, 255, 255), lang='en', det=True, rec=True, type='ocr', savefile=False, ocr_version='PP-OCRv4', structure_version='PP-StructureV2', use_direction_classify=True)
+[2024/08/30 09:28:07] ppocr DEBUG: dt_boxes num : 3, elapsed : 0.20616960525512695
+[2024/08/30 09:28:07] ppocr DEBUG: rec_res num  : 3, elapsed : 0.17260193824768066
+[2024-08-30 09:28:07,478] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "POST /ocr HTTP/1.1" 200 -
+[2024-08-30 09:28:07,580] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,582] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/dataTables/dataTables.bootstrap5.css HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,586] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/img/ocr.png HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,588] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,684] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/js/popper.min.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,686] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/dataTables/dataTables.bootstrap5.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,686] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/js/jquery-3.7.1.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,688] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/dataTables/dataTables.js HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,704] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[36mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 304 -
+[2024-08-30 09:28:07,759] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "GET /ocr HTTP/1.1" 200 -
+[2024-08-30 09:28:07,869] [    INFO] _internal.py:97 - 192.168.15.219 - - [30/Aug/2024 09:28:07] "[33mGET /static/js/popper.min.js.map HTTP/1.1[0m" 404 -

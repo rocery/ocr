@@ -9,7 +9,7 @@ from paddleocr import PaddleOCR
 from script.char_prosess import character_cleaning, character_process
 from datetime import datetime
 
-ocr = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en")
+ocr = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en", use_direction_classify=True)
 plat = []
 filename = []
 csv_data_photo_uploaded = 'pic/photo_uploaded.csv'
@@ -23,8 +23,12 @@ def image_preprocess(image, category, time_str, quality=100, compress_level=9):
     if not os.path.exists(folder_upload):
         os.makedirs(folder_upload)
     
+    # Extract the file extension
+    file_extension = os.path.splitext(image.filename)[1]
+    
+    # Construct the new filename with time_str
     global filename
-    filename = image.filename
+    filename = f"{os.path.splitext(image.filename)[0]}-{time_str}{file_extension}"
     
     # Open the image with PIL to handle EXIF data and save later
     pil_image = Image.open(image.stream)
@@ -143,25 +147,24 @@ def resize_image(image, max_width):
 
 def predict(frame):
     try:
-        # Convert PIL image to numpy array
-        # open_cv_image = np.array(frame)
-        
         # Perform OCR using PaddleOCR
-        
         try:
             result = OCR.ocr(frame, cls=True) 
         except:
-            OCR = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en")
+            OCR = PaddleOCR(enable_mkldnn=False, use_tensorrt=False, use_angle_cls=False, use_gpu=False, lang="en", use_direction_classify=True)
             result = OCR.ocr(frame, cls=False)
         
         # Check if result is None
         if result is None:
             raise ValueError("OCR result is None. Please check the input image and OCR settings.")
 
-        # Extract the bounding boxes, texts, and confidence scores
-        boxes = [line[0] for line in result[0]]
-        txts = [line[1][0] for line in result[0]]
-        scores = [line[1][1] for line in result[0]]
+        # Sort the OCR results based on the x-coordinate of the top-left corner (left to right)
+        sorted_result = sorted(result[0], key=lambda x: x[0][0][0])
+
+        # Extract the bounding boxes, texts, and confidence scores from the sorted result
+        boxes = [line[0] for line in sorted_result]
+        txts = [line[1][0] for line in sorted_result]
+        scores = [line[1][1] for line in sorted_result]
 
         reject = []
         global plat
@@ -174,7 +177,7 @@ def predict(frame):
                 plat.append(cleaned_string)
             print(f"Data: {data}, cleaned string: {cleaned_string}")
 
-        print(f"Pla: {plat}")
+        print(f"Plat: {plat}")
         plat = character_process(plat)
         print(f"OCR: {plat}")
 
@@ -182,11 +185,9 @@ def predict(frame):
         boxes = [np.array(box, dtype=np.int32).reshape((-1, 1, 2)) for box in boxes]
 
         return [(box, txt, score) for box, txt, score in zip(boxes, txts, scores)]
-    
+
     except Exception as e:
-        # Handle the error (e.g., log it, return a default value, etc.)
-        print(f"Error in OCR prediction: {e}")
-        # Return empty results or handle according to your needs
+        print(f"Error during OCR: {e}")
         return False
 
 def fixed_colors():
