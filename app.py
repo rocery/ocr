@@ -102,7 +102,7 @@ def ocr():
                 message_type = 'danger'
                 ocr_ = False
             elif status == 'noeks':
-                sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan\nData Tetap Diproses.'.format(label)
+                sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan\nData Tetap Diproses sebagai "Tamu".'.format(label)
                 message_type = 'warning'
                 ocr_ = True
             else:
@@ -122,6 +122,7 @@ def ocr():
                 sql_output = 'Kendaraan {} Berhasil "Keluar".'.format(label)
                 message_type = 'success'
                 ocr_ = True
+                
         flash(sql_output, message_type)
         
         # save_image_ocr(image, name_file, folder_date, time_input)
@@ -140,6 +141,11 @@ def data_ocr():
     
     data_ocr = get_data_ocr()
     return render_template('data_ocr.html', data_ocr=data_ocr, datetime=datetime)
+
+@app.route('/tamu_handler', methods=['GET', 'POST'])
+def tamu_handler():
+    if request.method == 'POST':
+        pass
 
 if __name__ == '__main__':
     # Run Flask with SSL
