@@ -122,6 +122,14 @@ def ocr():
                 sql_output = 'Kendaraan {} Berhasil "Keluar".'.format(label)
                 message_type = 'success'
                 ocr_ = True
+        
+        # Jika Tamu, maka user harus input Tujuan Tamu 
+        # if message_type == 'warning':
+        #     render_template('tamu.html',
+        #                     data = data,
+        #                     label = label,
+        #                     message = sql_output,
+        #                     message_type = message_type)
                 
         flash(sql_output, message_type)
         
