@@ -40,7 +40,7 @@
                 <form id="actionForm" action="/ocr" method="post" enctype="multipart/form-data">
                     <div class="mb-3 text-center">
                         <label for="image" class="form-label">Pilih Foto yang Akan Diproses</label>
-                        <input class="form-control" type="file" id="image" name="image" capture="environment" accept="image/*;capture=environment" onchange="previewImage(event)">
+                        <input class="form-control form-control-lg" type="file" id="image" name="image" capture="environment" accept="image/*;capture=environment" onchange="previewImage(event)">
                     </div>
                     <div class="mb-3">
                         <img id="imagePreview" class="mx-auto d-block img-thumbnail" src="#" alt="Image preview" style="display:none !important; max-width: 100%; height: auto;">
@@ -106,6 +106,36 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- Modal Popup untuk input keperluan yang tidak bisa ditutup -->
+    <div class="modal fade" id="keperluanModal" tabindex="-1" aria-labelledby="keperluanModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title text-center" id="keperluanModalLabel">Masukkan Keperluan</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="/ocr/submit_keperluan" method="POST">
+                        <p> {{ message }} </p>
+                        <div class="mb-3">
+                            <!-- <label for="keperluan" class="form-label">Keperluan</label> -->
+                            <!-- Dropdown form-select-lg -->
+                            <select class="form-select form-select-lg" id="keperluan" name="keperluan" required>
+                                <option selected disabled value="">Pilih Keperluan</option>
+                                {% for item in list_keperluan %}
+                                    <option value="{{ item }}">{{ item }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-lg btn-primary">Submit Keperluan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal for flash messages -->
@@ -245,6 +275,15 @@
                 }, 2000);
             }
         });
+
+        function showPopup() {
+            var popup = new bootstrap.Modal(document.getElementById('keperluanModal'));
+            popup.show();
+        }
+
+        {% if show_popup_keperluan %}
+            showPopup();
+        {% endif %}
     </script>
 </body>
 </html>

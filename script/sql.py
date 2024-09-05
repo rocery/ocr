@@ -124,6 +124,13 @@ def get_data_ocr():
     
     return result
 
+def keperluan():
+    conn = get_tparkir_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        
+    """)
 # Example usage in another script
 # if __name__ == "__main__":
 #     conn = get_tparkir_connection()

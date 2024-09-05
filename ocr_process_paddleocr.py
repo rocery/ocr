@@ -225,6 +225,7 @@ def show_labels(frame, predictions):
     return opencvimage, plat
 
 def save_image_ocr(image, file_name, folder_date, time_input, label, action):
+    print('save: {}'.format(action))
     csv = f"{folder_date}.csv"
     folder_path = os.path.join(folder_ocr, folder_date)
     csv_path = os.path.join(folder_ocr, csv)

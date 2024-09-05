@@ -10,7 +10,7 @@ import datetime
 app = Flask(__name__)
 app.secret_key = 'itbekasioke'
 USER_SECRET_KEY = 'user123'
-@app.route('/login_ocr', methods=['GET', 'POST'])
+@app.route('/ocr/login_ocr', methods=['GET', 'POST'])
 def login_ocr():
     if request.method == 'POST':
         secret_key = request.form.get('secret_key')
@@ -45,6 +45,8 @@ def ocr():
     if request.method == 'POST':
         action = request.form['action']
         image = request.files['image']
+        
+        print(action)
         
         if image:
             try:
@@ -102,9 +104,21 @@ def ocr():
                 message_type = 'danger'
                 ocr_ = False
             elif status == 'noeks':
-                sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan\nData Tetap Diproses sebagai "Tamu".'.format(label)
+                list_keperluan = ['Tamu', 'Sampah', 'BS', 'Interview', 'Lainnya']
+                # sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan.\nData Tetap Diproses sebagai "Tamu".'.format(label)
+                sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan.\nMohon Input Keperluan.'.format(label)
                 message_type = 'warning'
                 ocr_ = True
+                save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
+                # flash(sql_output, message_type)
+                return render_template('ocr.html',
+                           data=data,
+                           label=label,
+                           message=sql_output,
+                           message_type=message_type,
+                           csv_data=csv_data,
+                           list_keperluan=list_keperluan,
+                           show_popup_keperluan=True)
             else:
                 sql_output = 'Kendaraan {} Berhasil "Masuk"\nEkspedisi: {}.'.format(label, status)
                 message_type = 'success'
@@ -122,27 +136,24 @@ def ocr():
                 sql_output = 'Kendaraan {} Berhasil "Keluar".'.format(label)
                 message_type = 'success'
                 ocr_ = True
-        
-        # Jika Tamu, maka user harus input Tujuan Tamu 
-        # if message_type == 'warning':
-        #     render_template('tamu.html',
-        #                     data = data,
-        #                     label = label,
-        #                     message = sql_output,
-        #                     message_type = message_type)
                 
         flash(sql_output, message_type)
         
         # save_image_ocr(image, name_file, folder_date, time_input)
-    if ocr_ == True:
-        save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
-    elif ocr_ == False:
-        data_photo_failed(file_name, label, time_str, action)
+        if ocr_ == True:
+            save_image_ocr(show_label[0], file_name, date_str, time_str, label, action)
+        elif ocr_ == False:
+            pass
     
     csv_data = read_data_csv()    
-    return render_template('ocr.html', data=data, label=label, message = sql_output, message_type = message_type, csv_data=csv_data)
+    return render_template('ocr.html',
+                           data=data,
+                           label=label,
+                           message=sql_output,
+                           message_type=message_type,
+                           csv_data=csv_data)
 
-@app.route('/data_ocr')
+@app.route('/ocr/data_ocr')
 def data_ocr():
     if not session.get('authenticated'):
         return redirect(url_for('login_ocr'))
@@ -150,10 +161,15 @@ def data_ocr():
     data_ocr = get_data_ocr()
     return render_template('data_ocr.html', data_ocr=data_ocr, datetime=datetime)
 
-@app.route('/tamu_handler', methods=['GET', 'POST'])
-def tamu_handler():
-    if request.method == 'POST':
-        pass
+@app.route('/ocr/submit_keperluan', methods=['GET', 'POST'])
+def submit_keperluan():
+    
+    keperluan = request.form.get('keperluan')
+    if not keperluan:
+        return redirect(url_for('ocr'))
+    # Proses keperluan
+    flash(f"Keperluan {keperluan} telah disimpan.", "success")
+    return redirect(url_for('ocr'))
 
 if __name__ == '__main__':
     # Run Flask with SSL
