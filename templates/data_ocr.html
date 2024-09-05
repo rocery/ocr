@@ -43,6 +43,7 @@
                     <th>Ekspedisi</th>
                     <th>No Mobil</th>
                     <th>Jam Masuk Pabrik</th>
+                    <th>Keperluan</th>
                     <!-- <th>User In</th> -->
                     <th>Tanggal Keluar</th>
                     <th>Jam Keluar</th>
@@ -56,9 +57,9 @@
                     <td>{{ row[1] if row[1] else 'NULL' }}</td>
                     <td>{{ row[2] }}</td>
                     <td>{{ (datetime.datetime.min + row[3]).time().strftime('%H:%M:%S') if row[3] else 'NULL' }}</td>
-                    <!-- <td>{{ row[4] }}</td> -->
-                    <td>{{ row[5].strftime('%Y-%m-%d') if row[5] else 'NULL' }}</td>
-                    <td>{{ (datetime.datetime.min + row[6]).time().strftime('%H:%M:%S') if row[6] else 'NULL' }}</td>
+                    <td>{{ row[4] if row[4] else 'NULL' }}</td>
+                    <td>{{ row[6].strftime('%Y-%m-%d') if row[6] else 'NULL' }}</td>
+                    <td>{{ (datetime.datetime.min + row[7]).time().strftime('%H:%M:%S') if row[6] else 'NULL' }}</td>
                     <!-- <td>{{ row[7] }}</td> -->
                 </tr>
                 {% endfor %}

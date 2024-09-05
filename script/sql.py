@@ -112,9 +112,9 @@ def get_data_ocr():
     cursor = conn.cursor()
     
     cursor.execute("""
-        SELECT tanggal, ekspedisi, no_mobil, jam_masuk_pabrik, user_in, tanggal_keluar, jam_keluar, user_out
+        SELECT tanggal, ekspedisi, no_mobil, jam_masuk_pabrik, keperluan, user_in, tanggal_keluar, jam_keluar, user_out
         FROM test
-        ORDER BY tanggal DESC
+        ORDER BY tanggal DESC, jam_masuk_pabrik DESC
         LIMIT 100
     """)
     result = cursor.fetchall()
@@ -139,6 +139,21 @@ def keperluan(label, keperluan):
 
         if latest_date is None:
             return False  # No record found for the given no_mobil
+        
+        # Step 2: Get the latest time for the given no_mobil
+        cursor.execute("""
+            SELECT MAX(jam_masuk_pabrik) 
+            FROM test 
+            WHERE no_mobil = %s
+            AND tanggal = %s
+        """, (label, latest_date))
+        latest_time = cursor.fetchone()[0]
+
+        if latest_time is None:
+            return False  # No record found for the given no_mobil
+        
+        print(latest_date)
+        print(latest_time)
 
         # Step 2: Update the record with the latest tanggal
         cursor.execute("""
@@ -146,7 +161,8 @@ def keperluan(label, keperluan):
             SET keperluan = %s
             WHERE no_mobil = %s
             AND tanggal = %s
-        """, (keperluan, label, latest_date))
+            AND jam_masuk_pabrik = %s
+        """, (keperluan, label, latest_date, latest_time))
         
         conn.commit()
         
