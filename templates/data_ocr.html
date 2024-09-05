@@ -39,34 +39,27 @@
         <table id="foldersTable" class="table table-hover">
             <thead>
                 <tr>
-                    <th>Tanggal</th>
-                    <th>Ekspedisi</th>
+                    <th>Waktu Masuk</th>
                     <th>No Mobil</th>
-                    <th>Jam Masuk Pabrik</th>
+                    <th>Ekspedisi</th>
                     <th>Keperluan</th>
-                    <!-- <th>User In</th> -->
-                    <th>Tanggal Keluar</th>
-                    <th>Jam Keluar</th>
-                    <!-- <th>User Out</th> -->
+                    <th>Waktu Keluar</th>
                 </tr>
             </thead>
             <tbody>
                 {% for row in data_ocr %}
                 <tr>
-                    <td>{{ row[0].strftime('%Y-%m-%d') if row[0] else 'NULL' }}</td>
-                    <td>{{ row[1] if row[1] else 'NULL' }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ (datetime.datetime.min + row[3]).time().strftime('%H:%M:%S') if row[3] else 'NULL' }}</td>
-                    <td>{{ row[4] if row[4] else 'NULL' }}</td>
-                    <td>{{ row[6].strftime('%Y-%m-%d') if row[6] else 'NULL' }}</td>
-                    <td>{{ (datetime.datetime.min + row[7]).time().strftime('%H:%M:%S') if row[6] else 'NULL' }}</td>
-                    <!-- <td>{{ row[7] }}</td> -->
+                    <td>{{ row[0] if row[0] else '-' }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] if row[2] else '-' }}</td>
+                    <td>{{ row[3] if row[3] else '-' }}</td>
+                    <td>{{ row[4] if row[4] else '-' }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         {% else %}
-        <p>No data available.</p>
+        <p>Data tidak tersedia.</p>
         {% endif %}
 
         <p class="text-center">Jumlah Data Maksimal yang Ditampilkan 100, Jika Membutuhkan Data Lebih Banyak Bisa Menghubungi IT.</p>

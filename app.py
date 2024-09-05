@@ -155,7 +155,7 @@ def ocr():
                            message_type=message_type,
                            csv_data=csv_data)
 
-@app.route('/ocr/data_ocr')
+@app.route('/ocr/data_ocr', methods=['GET', 'POST'])
 def data_ocr():
     if not session.get('authenticated'):
         return redirect(url_for('login_ocr'))

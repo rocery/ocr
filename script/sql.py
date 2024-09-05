@@ -112,8 +112,14 @@ def get_data_ocr():
     cursor = conn.cursor()
     
     cursor.execute("""
-        SELECT tanggal, ekspedisi, no_mobil, jam_masuk_pabrik, keperluan, user_in, tanggal_keluar, jam_keluar, user_out
-        FROM test
+        SELECT 
+            CONCAT(tanggal, ' ', jam_masuk_pabrik) AS waktu_masuk,
+            no_mobil,
+            ekspedisi,
+            keperluan,
+            CONCAT(tanggal_keluar, ' ', jam_keluar) AS waktu_keluar
+        FROM 
+            test
         ORDER BY tanggal DESC, jam_masuk_pabrik DESC
         LIMIT 100
     """)
@@ -121,7 +127,7 @@ def get_data_ocr():
     
     cursor.close()
     conn.close()
-    
+    print(result)
     return result
 
 def keperluan(label, keperluan):
