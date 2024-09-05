@@ -118,7 +118,10 @@
                 </div>
                 <div class="modal-body">
                     <form action="/ocr/submit_keperluan" method="POST">
-                        <p> {{ message }} </p>
+                        <h6> {{ message }} </h6>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="no_mobil" name="no_mobil" {% if label %} value="{{ label }}" {% endif %} readonly>
+                        </div>
                         <div class="mb-3">
                             <!-- <label for="keperluan" class="form-label">Keperluan</label> -->
                             <!-- Dropdown form-select-lg -->

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
-from script.sql import get_tparkir_connection, masuk, keluar, get_data_ocr
+from script.sql import get_tparkir_connection, masuk, keluar, get_data_ocr, keperluan
 from script.char_prosess import character_check
 from script.owi import detect_and_return_cropped_license_plate
 import datetime
@@ -10,6 +10,8 @@ import datetime
 app = Flask(__name__)
 app.secret_key = 'itbekasioke'
 USER_SECRET_KEY = 'user123'
+label_for_update = None
+
 @app.route('/ocr/login_ocr', methods=['GET', 'POST'])
 def login_ocr():
     if request.method == 'POST':
@@ -46,8 +48,6 @@ def ocr():
         action = request.form['action']
         image = request.files['image']
         
-        print(action)
-        
         if image:
             try:
                 img = Image.open(image.stream)
@@ -75,6 +75,8 @@ def ocr():
                 
                 show_label = show_labels(image, pred)                
                 label = show_label[1]
+                global label_for_update
+                label_for_update = label
                 data = numpy_to_base64(show_label[0])
                 
                 if character_check(label) == False:
@@ -163,12 +165,24 @@ def data_ocr():
 
 @app.route('/ocr/submit_keperluan', methods=['GET', 'POST'])
 def submit_keperluan():
+    post_keperluan = request.form.get('keperluan')
+    post_label = request.form.get('no_mobil')
     
-    keperluan = request.form.get('keperluan')
-    if not keperluan:
+    if not post_keperluan or not post_label:
+        flash("Proses Input Tamu Gagal", "danger")
         return redirect(url_for('ocr'))
-    # Proses keperluan
-    flash(f"Keperluan {keperluan} telah disimpan.", "success")
+    
+    txt = None
+    sts = None
+    update = keperluan(post_label, post_keperluan)
+    if update:
+        txt = "Proses Masuk Kendaraan: {} Berhasil.\nKeperluan: {}".format(post_label, post_keperluan)
+        sts = "success"
+    else:
+        txt = "Proses Masuk Kendaraan: {} Gagal.\nKeperluan: {}".format(post_label, post_keperluan)
+        sts = "danger"
+        
+    flash(txt, sts)
     return redirect(url_for('ocr'))
 
 if __name__ == '__main__':

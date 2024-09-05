@@ -124,13 +124,49 @@ def get_data_ocr():
     
     return result
 
-def keperluan():
-    conn = get_tparkir_connection()
-    cursor = conn.cursor()
+def keperluan(label, keperluan):
+    try:
+        conn = get_tparkir_connection()
+        cursor = conn.cursor()
 
-    cursor.execute("""
+        # Step 1: Get the latest tanggal for the given no_mobil
+        cursor.execute("""
+            SELECT MAX(tanggal) 
+            FROM test 
+            WHERE no_mobil = %s
+        """, (label,))
+        latest_date = cursor.fetchone()[0]
+
+        if latest_date is None:
+            return False  # No record found for the given no_mobil
+
+        # Step 2: Update the record with the latest tanggal
+        cursor.execute("""
+            UPDATE test
+            SET keperluan = %s
+            WHERE no_mobil = %s
+            AND tanggal = %s
+        """, (keperluan, label, latest_date))
         
-    """)
+        conn.commit()
+        
+        # Mengecek jumlah baris yang terpengaruh
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+
+    except mysql.connector.Error as err:
+        print(f"Errors: {err}")
+        return "Error"
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    
+    
 # Example usage in another script
 # if __name__ == "__main__":
 #     conn = get_tparkir_connection()
