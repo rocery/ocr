@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from ocr_process_paddleocr import *
 import time
 from PIL import Image
-from script.sql import get_tparkir_connection, masuk, keluar, get_data_ocr, keperluan
+from script.sql import get_tparkir_connection, masuk, keluar, get_data_ocr, keperluan, masuk_220, keluar_220
 from script.char_prosess import character_check
 from script.owi import detect_and_return_cropped_license_plate
 import datetime
@@ -106,7 +106,7 @@ def ocr():
                 message_type = 'danger'
                 ocr_ = False
             elif status == 'noeks':
-                list_keperluan = ['Tamu', 'Sampah', 'BS', 'Interview', 'Lainnya']
+                list_keperluan = ['Tamu', 'Logistik', 'Sampah', 'BS', 'Interview', 'Lainnya']
                 # sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan.\nData Tetap Diproses sebagai "Tamu".'.format(label)
                 sql_output = 'Data Ekspedisi Kendaraan {} Tidak Ditemukan.\nMohon Input Keperluan.'.format(label)
                 message_type = 'warning'
@@ -125,15 +125,25 @@ def ocr():
                 sql_output = 'Kendaraan {} Berhasil "Masuk"\nEkspedisi: {}.'.format(label, status)
                 message_type = 'success'
                 ocr_ = True
-                
+            
+                # Akan diproses jika status kendaraan tidak sedang didalam dan ekspedisi terdaftar
+                masuk_220(date_str, label, time_str, 'security')
+            
         elif action == 'Keluar':
             # keluar(conn, a, custom_tanggal_keluar, '12:34:56', 'ADI'
             status = keluar(conn, label, date_str, time_str, 'security')
+            status_220 = keluar_220(label, date_str, time_str, 'security')
             
-            if status == 'outside':
+            # Jika status kendaraan sedang diluar, maka gagal input data
+            
+            if status == status_220:
                 sql_output = 'Status Terakhir Kendaraan {}: "Diluar/Keluar/Tidak Ada".\nPerlu Proses "Masuk".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
+            # elif status != status_220:
+            #     sql_output = 'Status Terakhir Kendaraan Tamu {}: "Diluar/Keluar/Tidak Ada".\nPerlu Proses "Masuk".'.format(label)
+            #     message_type = 'danger'
+            #     ocr_ = False
             else:
                 sql_output = 'Kendaraan {} Berhasil "Keluar".'.format(label)
                 message_type = 'success'
@@ -174,8 +184,15 @@ def submit_keperluan():
     
     txt = None
     sts = None
+    update_220 = None
     update = keperluan(post_label, post_keperluan)
-    if update:
+    
+    date_str = time.strftime("%Y-%m-%d", time.localtime())
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    if post_keperluan == 'Logistik':
+        update_220 = masuk_220(date_str, post_label, time_str, 'security')
+    
+    if update or update_220 == "Success":
         txt = "Proses Masuk Kendaraan: {} Berhasil.\nKeperluan: {}".format(post_label, post_keperluan)
         sts = "success"
     else:
