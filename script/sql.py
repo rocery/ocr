@@ -68,30 +68,41 @@ def masuk_220(tanggal, no_mobil, jam_masuk_pabrik, user_in):
 def keluar_220(no_mobil, tanggal_keluar, jam_keluar, user_out):
     conn = get_tparkir_connection_220()
     
-    cursor = conn.cursor()
-    no_mobil_normalized = normalize_no_mobil(no_mobil)
-    status = None
+    try:
+        cursor = conn.cursor()
+        no_mobil_normalized = normalize_no_mobil(no_mobil)
+        
+        # Fetch entry for the vehicle that hasn't exited yet and has entered the factory
+        cursor.execute("""
+            SELECT * FROM tparkir
+            WHERE no_mobil = %s AND tanggal_keluar IS NULL AND jam_masuk_pabrik IS NOT NULL
+        """, (no_mobil_normalized,))
+        result = cursor.fetchone()
+
+        if not result:
+            print(f"No entry found for vehicle {no_mobil_normalized}, or it has already exited.")
+            return "outside"
+
+        # Update the entry with exit details
+        cursor.execute("""
+            UPDATE tparkir
+            SET tanggal_keluar = %s, jam_keluar = %s, user_out = %s
+            WHERE no_mobil = %s AND tanggal_keluar IS NULL
+        """, (tanggal_keluar, jam_keluar, user_out, no_mobil_normalized))
+        
+        conn.commit()
+        print(f"Vehicle {no_mobil_normalized} has exited.")
+        return "inside"
+
+    except mysql.connector.Error as err:
+        # Handle any error and rollback
+        conn.rollback()
+        print(f"Error occurred: {err}")
+        return f"Failed: {err}"
     
-    cursor.execute("""
-        SELECT * FROM tparkir
-        WHERE no_mobil = %s AND tanggal_keluar IS NULL AND jam_masuk_pabrik IS NOT NULL
-    """, (no_mobil_normalized,))
-    result = cursor.fetchone()
-
-    if not result:
-        print(f"No entry found for vehicle {no_mobil_normalized}, or it has already exited.")
-        status = "outside"
-        return status
-
-    cursor.execute("""
-        UPDATE tparkir
-        SET tanggal_keluar = %s, jam_keluar = %s, user_out = %s
-        WHERE no_mobil = %s AND tanggal_keluar IS NULL
-    """, (tanggal_keluar, jam_keluar, user_out, no_mobil_normalized))
-    conn.commit()
-    print(f"Vehicle {no_mobil_normalized} has exited.")
-    status = "inside"
-    return status
+    finally:
+        cursor.close()  # Ensure the cursor is always closed
+    
 
 # Function to handle "masuk" (entry)
 def masuk(conn, tanggal, no_mobil, jam_masuk_pabrik, user_in):
@@ -106,7 +117,7 @@ def masuk(conn, tanggal, no_mobil, jam_masuk_pabrik, user_in):
         status = "noeks"
 
     cursor.execute("""
-        SELECT * FROM test
+        SELECT * FROM ocr
         WHERE no_mobil = %s AND (tanggal_keluar IS NULL OR jam_keluar IS NULL)
     """, (no_mobil_normalized,))
     result = cursor.fetchone()
@@ -117,7 +128,7 @@ def masuk(conn, tanggal, no_mobil, jam_masuk_pabrik, user_in):
         return status
 
     cursor.execute("""
-        INSERT INTO test (tanggal, no_mobil, jam_masuk_pabrik, user_in, ekspedisi)
+        INSERT INTO ocr (tanggal, no_mobil, jam_masuk_pabrik, user_in, ekspedisi)
         VALUES (%s, %s, %s, %s, %s)
     """, (tanggal, no_mobil_normalized, jam_masuk_pabrik, user_in, ekspedisi))
     conn.commit()
@@ -137,7 +148,7 @@ def keluar(conn, no_mobil, tanggal_keluar, jam_keluar, user_out):
     status = None
     
     cursor.execute("""
-        SELECT * FROM test
+        SELECT * FROM ocr
         WHERE no_mobil = %s AND tanggal_keluar IS NULL AND jam_masuk_pabrik IS NOT NULL
     """, (no_mobil_normalized,))
     result = cursor.fetchone()
@@ -148,7 +159,7 @@ def keluar(conn, no_mobil, tanggal_keluar, jam_keluar, user_out):
         return status
 
     cursor.execute("""
-        UPDATE test
+        UPDATE ocr
         SET tanggal_keluar = %s, jam_keluar = %s, user_out = %s
         WHERE no_mobil = %s AND tanggal_keluar IS NULL
     """, (tanggal_keluar, jam_keluar, user_out, no_mobil_normalized))
@@ -173,7 +184,7 @@ def get_data_ocr():
             keperluan,
             CONCAT(tanggal_keluar, ' ', jam_keluar) AS waktu_keluar
         FROM 
-            test
+            ocr
         ORDER BY tanggal DESC, jam_masuk_pabrik DESC
         LIMIT 100
     """)
@@ -192,7 +203,7 @@ def keperluan(label, keperluan):
         # Step 1: Get the latest tanggal for the given no_mobil
         cursor.execute("""
             SELECT MAX(tanggal) 
-            FROM test 
+            FROM ocr 
             WHERE no_mobil = %s
         """, (label,))
         latest_date = cursor.fetchone()[0]
@@ -203,7 +214,7 @@ def keperluan(label, keperluan):
         # Step 2: Get the latest time for the given no_mobil
         cursor.execute("""
             SELECT MAX(jam_masuk_pabrik) 
-            FROM test 
+            FROM ocr 
             WHERE no_mobil = %s
             AND tanggal = %s
         """, (label, latest_date))
@@ -217,7 +228,7 @@ def keperluan(label, keperluan):
 
         # Step 2: Update the record with the latest tanggal
         cursor.execute("""
-            UPDATE test
+            UPDATE ocr
             SET keperluan = %s
             WHERE no_mobil = %s
             AND tanggal = %s

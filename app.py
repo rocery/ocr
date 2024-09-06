@@ -134,9 +134,11 @@ def ocr():
             status = keluar(conn, label, date_str, time_str, 'security')
             status_220 = keluar_220(label, date_str, time_str, 'security')
             
+            print(status)
+            print(status_220)
             # Jika status kendaraan sedang diluar, maka gagal input data
             
-            if status == status_220:
+            if status == 'outside' or status_220 == 'outside':
                 sql_output = 'Status Terakhir Kendaraan {}: "Diluar/Keluar/Tidak Ada".\nPerlu Proses "Masuk".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
