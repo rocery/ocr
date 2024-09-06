@@ -132,13 +132,9 @@ def ocr():
         elif action == 'Keluar':
             # keluar(conn, a, custom_tanggal_keluar, '12:34:56', 'ADI'
             status = keluar(conn, label, date_str, time_str, 'security')
-            status_220 = keluar_220(label, date_str, time_str, 'security')
+            keluar_220(label, date_str, time_str, 'security')
             
-            print(status)
-            print(status_220)
-            # Jika status kendaraan sedang diluar, maka gagal input data
-            
-            if status == 'outside' or status_220 == 'outside':
+            if status == 'outside':
                 sql_output = 'Status Terakhir Kendaraan {}: "Diluar/Keluar/Tidak Ada".\nPerlu Proses "Masuk".'.format(label)
                 message_type = 'danger'
                 ocr_ = False
